@@ -42,10 +42,11 @@ class _CustomPaintWidgetState extends State<CustomPaintWidget>
         AnimationController(vsync: this, duration: Duration(seconds: 4))
           ..repeat(reverse: true);
 
-    offsetAnimation = Tween<Offset>(begin: Offset(0, 0.2), end: Offset(0, -0.2))
-        .animate(CurvedAnimation(
+    offsetAnimation =
+        Tween<Offset>(begin: Offset(0.0, -0.2), end: Offset(0.0, 0.8))
+            .animate(CurvedAnimation(
       parent: controller3,
-      curve: Curves.bounceIn,
+      curve: Curves.elasticInOut,
     ));
 
     animation = _rotationTween.animate(controller)
@@ -90,15 +91,22 @@ class _CustomPaintWidgetState extends State<CustomPaintWidget>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            child: SlideTransition(
-              position: offsetAnimation,
-              child: CustomPaint(
-                painter: ShapePainter(
-                    side: _sides,
-                    radies: animation1.value,
-                    animation: animation.value),
-                child: Container(),
-              ),
+            child:
+                // SlideTransition(
+                //   position: offsetAnimation,
+                //   child:
+                CustomPaint(
+              painter: ShapePainter(
+                  side: _sides,
+                  radies: animation1.value,
+                  animation: animation.value),
+              child: Container(),
+            ),
+            // ),
+          ),
+          Expanded(
+            child: CustomPaint(
+              painter: Rectangle(),
             ),
           ),
           Slider(
@@ -129,6 +137,14 @@ class _CustomPaintWidgetState extends State<CustomPaintWidget>
   }
 }
 
+class Rectangle extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {}
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
+
 class ShapePainter extends CustomPainter {
   double side;
   double radies;
@@ -141,14 +157,20 @@ class ShapePainter extends CustomPainter {
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
+
+    var paintCircle = Paint()
+      ..color = Colors.red
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
     var path = Path();
     var angle = (math.pi * 2) / side;
-    // print(angle);
 
     Offset center = Offset(size.width / 2, size.height / 2);
     Offset startPoint =
         Offset(radies * math.cos(animation), radies * math.sin(animation));
-    // print("startPoint.dx ----------------" + startPoint.dx.toString());
+    // print("startPoint.dx -----------------------------" +
+    //     startPoint.dx.toString());
     // print("startPoint.dy -----------------------------" +
     //     startPoint.dy.toString());
     // print("center.dx " + center.dx.toString());
@@ -159,7 +181,10 @@ class ShapePainter extends CustomPainter {
     for (int i = 1; i <= side; i++) {
       double x = radies * math.cos(animation + angle * i) + center.dx;
       double y = radies * math.sin(animation + angle * i) + center.dy;
-      path.lineTo(x, y);
+      path.lineTo(
+        x,
+        y,
+      );
     }
     path.close();
 
@@ -174,6 +199,28 @@ class ShapePainter extends CustomPainter {
 
     Offset endingPoint = Offset(size.width, size.height / 2);
 
+    var pathCircle = Path();
+    pathCircle.addOval(Rect.fromCircle(
+      radius: radies,
+      // width: 200,
+      // height: 400,
+      center: Offset(size.width / 2, size.height / 2),
+    ));
+    canvas.drawPath(pathCircle, paintCircle);
+
+    var paintCube = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 10
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.fill;
+
+    var pathCube = Path();
+    pathCube.cubicTo(size.width / 4, 3 * size.height / 4, 3 * size.width / 4,
+        size.height / 4, size.width, size.height);
+    // canvas.drawPath(path, paint);
+    // print(angle);
+
+    canvas.drawPath(pathCube, paintCube);
     // canvas.drawCircle(center, 100, paint);
   }
 

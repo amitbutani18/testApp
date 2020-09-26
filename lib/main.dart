@@ -149,6 +149,7 @@ import 'package:device_simulator/device_simulator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:testApp/custompaint.dart';
+import 'package:testApp/deep_link_test.dart';
 import 'package:testApp/providers.dart';
 import 'package:testApp/responsive.dart';
 import 'PlanetCard.dart';
@@ -173,9 +174,7 @@ class MyApp extends StatelessWidget {
         //   }
         // },
         home: DeviceSimulator(
-            brightness: Brightness.dark,
-            enable: true,
-            child: CustomPaintWidget()),
+            brightness: Brightness.dark, enable: true, child: DeepLinkTest()),
       ),
     );
   }
