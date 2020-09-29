@@ -145,12 +145,18 @@
 //     );
 //   }
 // }
+import 'dart:ui';
+
 import 'package:device_simulator/device_simulator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:testApp/custompaint.dart';
+import 'package:testApp/custom_listview.dart';
+import 'package:testApp/listtest.dart';
 import 'package:testApp/deep_link_test.dart';
 import 'package:testApp/providers.dart';
+import 'package:testApp/reflectly_login.dart';
 import 'package:testApp/responsive.dart';
 import 'PlanetCard.dart';
 import 'CardDetails.dart';
@@ -162,6 +168,10 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // final num height = MediaQueryData.fromWindow(window).size.height;
+    // final num width = MediaQueryData.fromWindow(window).size.width;
+    // ScreenUtil.init(context, width: 414.0, height: 896.0);
+    // ScreenUtil.init(context, designSize: Size(414.0, 896.0));
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: Providers()),
@@ -173,8 +183,11 @@ class MyApp extends StatelessWidget {
         //     // return new CardDetails();
         //   }
         // },
+        theme: ThemeData(
+          fontFamily: 'Quicksand',
+        ),
         home: DeviceSimulator(
-            brightness: Brightness.dark, enable: true, child: DeepLinkTest()),
+            brightness: Brightness.dark, enable: true, child: ReflectyLogin()),
       ),
     );
   }
